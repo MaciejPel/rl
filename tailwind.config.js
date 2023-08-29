@@ -2,7 +2,11 @@
 export default {
 	content: ["./src/**/*.{html,js,svelte,ts}"],
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				quicksand: ["Quicksand"]
+			}
+		}
 	},
 	plugins: [require("daisyui")],
 	daisyui: {
@@ -11,6 +15,15 @@ export default {
 				light: {
 					// eslint-disable-next-line @typescript-eslint/no-var-requires
 					...require("daisyui/src/theming/themes")["[data-theme=light]"],
+					"base-content": "#000",
+					"base-300": "#f6f7fb"
+				}
+			},
+			{
+				dark: {
+					// eslint-disable-next-line @typescript-eslint/no-var-requires
+					...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+					"base-content": "#fff",
 					"base-300": "#0a092d"
 				}
 			}
