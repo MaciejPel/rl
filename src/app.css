@@ -1,10 +1,24 @@
-@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body,
-html {
-	@apply bg-base-300;
+.ts-logo {
+	transition: text-shadow 250ms ease-in-out;
+	text-shadow: -3px 3px 0 #0a0a0a;
+}
+.ts-logo:hover {
+	text-shadow: 3px -3px 0 #0a0a0a;
+}
+
+.ts-nav-link {
+	text-shadow: 0 0 0 #0a0a0a;
+}
+.ts-nav-link:hover {
+	@apply opacity-100;
+	text-shadow: 3px 3px 0 #0a0a0a;
+}
+.ts-nav-link-active {
+	text-shadow: 3px 3px 0 #0a0a0a;
 }
