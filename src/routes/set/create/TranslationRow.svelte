@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { slide } from "svelte/transition";
+
 	export let idx = 0;
 	export let [sourceValue, targetValue] = ["", ""];
 	export let removeRow = (_: number) => {};
 </script>
 
-<div class="flex flex-col items-center w-full bg-neutral-700 rounded-xl">
+<div class="flex flex-col items-center w-full bg-neutral-700 rounded-xl" transition:slide>
 	<div class="flex justify-between px-4 py-2 w-full">
 		<span class="font-bold text-lg text-neutral-500">
 			{idx + 1}
