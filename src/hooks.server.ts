@@ -6,6 +6,6 @@ export const handleError: HandleServerError = ({ error, event }) => {
 
 	return {
 		message: is404 ? "Page you are looking for does not exist" : "Unknown error",
-		code: is404 ? "404" : "Unknow"
+		code: is404 ? "404" : "Unknown"
 	};
 };
