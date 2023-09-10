@@ -52,13 +52,13 @@
 		type="text"
 		name="name"
 		bind:value={name}
-		class="input font-bold bg-neutral-700"
+		class="input font-bold bg-base-200"
 		placeholder="Set name"
 	/>
 	{#each rows as row, idx}
 		<TranslationRow {idx} bind:sourceValue={row[0]} bind:targetValue={row[1]} {removeRow} />
 	{/each}
-	<div class="fixed w-full bg-gray-700 bottom-0 left-0 flex justify-center items-center">
+	<div class="fixed w-full bg-base-200 bottom-0 left-0 flex justify-center items-center">
 		<div class="container flex justify-between py-2 px-16">
 			<div class="join">
 				<button type="button" class="btn btn-error join-item" on:click={clearRows}>

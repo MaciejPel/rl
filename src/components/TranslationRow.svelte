@@ -6,12 +6,16 @@
 	export let removeRow = (_: number) => {};
 </script>
 
-<div class="flex flex-col items-center w-full bg-neutral-700 rounded-xl" transition:slide>
+<div class="flex flex-col items-center w-full bg-base-200 rounded-xl" transition:slide>
 	<div class="flex justify-between px-4 py-2 w-full">
-		<span class="font-bold text-lg text-neutral-500">
+		<span class="font-bold text-lg text-base-content">
 			{idx + 1}
 		</span>
-		<button on:click={() => removeRow(idx)} type="button" class="fill-white hover:fill-error">
+		<button
+			on:click={() => removeRow(idx)}
+			type="button"
+			class="fill-base-content hover:fill-error"
+		>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
 				<path
 					fill-rule="evenodd"
@@ -27,7 +31,7 @@
 			<input
 				type="text"
 				bind:value={sourceValue}
-				class="py-1 w-full bg-transparent border-b-2 border-white"
+				class="py-1 w-full bg-transparent border-b-2 border-base-content"
 			/>
 			<span class="uppercase text-xs font-bold opacity-75">Source</span>
 		</div>
@@ -35,7 +39,7 @@
 			<input
 				type="text"
 				bind:value={targetValue}
-				class="py-1 w-full bg-transparent border-b-2 border-white"
+				class="py-1 w-full bg-transparent border-b-2 border-base-content"
 			/>
 			<span class="uppercase text-xs font-bold opacity-75">Target</span>
 		</div>

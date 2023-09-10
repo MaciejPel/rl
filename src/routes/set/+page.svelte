@@ -21,12 +21,9 @@
 </div>
 <div class="grid grid-cols-3 gap-4">
 	{#each sets as set}
-		<a
-			href="/set/{set.id}"
-			class="card w-full bg-neutral text-neutral-content group hover:underline"
-		>
+		<a href="/set/{set.id}" class="card w-full bg-base-200 text-base-content group">
 			<div class="card-body items-center text-center">
-				<h2 class="card-title">{set.name}</h2>
+				<h2 class="card-title group-hover:underline">{set.name}</h2>
 				<p>{set.data.length}</p>
 			</div>
 		</a>

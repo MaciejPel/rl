@@ -61,10 +61,8 @@
 		</nav>
 	</div>
 </header>
-<main
-	class="bg-base-100 transition-colors font-open-sans min-h-[calc(100lvh-3.25rem)] flex justify-center"
->
-	<div class="container py-4 px-16 relative">
+<main class="transition-colors font-open-sans min-h-[calc(100lvh-3.25rem)] flex justify-center">
+	<div class="container py-4 px-2 md:px-16 relative">
 		<slot />
 	</div>
 </main>
