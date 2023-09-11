@@ -2,6 +2,7 @@
 	import { setStore } from "../../../stores/setStore";
 	import ImportModal from "../../../components/ImportModal.svelte";
 	import TranslationRow from "../../../components/TranslationRow.svelte";
+	import { showModal } from "../../../utils/functions";
 
 	let name = "Test set";
 	let rows: [string, string, number][] = [["", "", 0]];
@@ -27,11 +28,6 @@
 
 	function clearRows() {
 		rows = [["", "", 0]];
-	}
-
-	function showModal() {
-		const d: HTMLDialogElement | null = document.querySelector("#import-modal");
-		d?.showModal();
 	}
 
 	function processSet(rd: string, wd: string, content: string) {
@@ -62,7 +58,13 @@
 				<button type="button" class="btn btn-error join-item" on:click={clearRows}>
 					Clear all
 				</button>
-				<button type="button" class="btn btn-info join-item" on:click={showModal}> Import </button>
+				<button
+					type="button"
+					class="btn btn-info join-item"
+					on:click={() => showModal("#import-modal")}
+				>
+					Import
+				</button>
 			</div>
 			<div class="join">
 				<button type="button" class="btn btn-info join-item" on:click={appendRow}>Add row</button>

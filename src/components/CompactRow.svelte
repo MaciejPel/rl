@@ -1,7 +1,8 @@
 <script lang="ts">
 	export let idx: number | null = null;
+	export let onRowSave = (idx: number | null, src: string, tgt: string) => {};
 	export let [source, target] = ["", ""];
-	export let onSave = (idx: number | null, src: string, tgt: string) => {};
+	let [sourceValue, targetValue] = [source, target];
 	let editMode = false;
 </script>
 
@@ -9,8 +10,10 @@
 	<div class="flex flex-col md:flex-row justify-between gap-2 md:gap-4 grow-[3]">
 		<input
 			type="text"
-			bind:value={source}
-			class="bg-transparent grow {editMode ? 'border-b-2 border-base-content ' : ''}"
+			bind:value={sourceValue}
+			class="bg-transparent grow border-y-2 border-t-transparent {editMode
+				? 'border-b-base-content'
+				: 'border-b-transparent'}"
 			disabled={!editMode}
 		/>
 		<div class="flex self-stretch h-full grow">
@@ -18,17 +21,33 @@
 		</div>
 		<input
 			type="text"
-			bind:value={target}
-			class="bg-transparent grow-[2] {editMode ? 'border-b-2 border-base-content ' : ''}"
+			bind:value={targetValue}
+			class="bg-transparent grow-[2] border-y-2 border-t-transparent {editMode
+				? 'border-b-base-content'
+				: 'border-b-transparent'}"
 			disabled={!editMode}
 		/>
 	</div>
 	<div class="flex gap-2 justify-end self-center grow-[1]">
+		{#if editMode}
+			<button
+				class="btn btn-sm btn-error fill-white"
+				on:click={() => ([editMode, sourceValue, targetValue] = [false, source, target])}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+					<path
+						fill-rule="evenodd"
+						d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+			</button>
+		{/if}
 		<button
-			class="fill-base-content hover:fill-primary"
+			class="btn btn-sm btn-primary fill-white"
 			on:click={() => {
 				editMode = !editMode;
-				if (!editMode) onSave(idx, source, target);
+				if (!editMode) onRowSave(idx, sourceValue, targetValue);
 			}}
 		>
 			{#if editMode}
