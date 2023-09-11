@@ -4,17 +4,31 @@
 	import CompactRow from "../../../components/CompactRow.svelte";
 	import { goto } from "$app/navigation";
 
-	let setId: string | null = null;
-	let set: {
+	interface Set {
 		id: string;
 		name: string;
 		data: [string, string, number][];
-	} | null = null;
+	}
+
+	let setId: string | null = null;
+	let set: Set | null = null;
+
+	function onSave(idx: number | null, src: string, tgt: string) {
+		if (idx === null || !set) return;
+		set.data[idx][0] = src;
+		set.data[idx][1] = tgt;
+		setStore.update((value: Set[]) => {
+			if (!set) return [];
+			const idx = value.findIndex((v) => v.id == setId);
+			value[idx] = set;
+			return value;
+		});
+	}
 
 	$: setId = $page.url.pathname.split("/")[2];
 
-	$: setStore.subscribe((value) => {
-		set = value.filter((v: { id: string }) => v.id === setId)[0];
+	$: setStore.subscribe((value: Set[]) => {
+		set = value.filter((v) => v.id === setId)[0];
 		if (!set) return goto("/set");
 	});
 </script>
@@ -33,8 +47,8 @@
 	</div>
 	<div class="flex flex-col gap-2">
 		{#if set?.data.length}
-			{#each set.data as s}
-				<CompactRow source={s[0]} target={s[1]} />
+			{#each set.data as s, idx}
+				<CompactRow {idx} source={s[0]} target={s[1]} {onSave} />
 			{/each}
 		{/if}
 	</div>

@@ -1,5 +1,7 @@
 <script lang="ts">
+	export let idx: number | null = null;
 	export let [source, target] = ["", ""];
+	export let onSave = (idx: number | null, src: string, tgt: string) => {};
 	let editMode = false;
 </script>
 
@@ -7,7 +9,7 @@
 	<div class="flex flex-col md:flex-row justify-between gap-2 md:gap-4 grow-[3]">
 		<input
 			type="text"
-			value={source}
+			bind:value={source}
 			class="bg-transparent grow {editMode ? 'border-b-2 border-base-content ' : ''}"
 			disabled={!editMode}
 		/>
@@ -16,13 +18,19 @@
 		</div>
 		<input
 			type="text"
-			value={target}
+			bind:value={target}
 			class="bg-transparent grow-[2] {editMode ? 'border-b-2 border-base-content ' : ''}"
 			disabled={!editMode}
 		/>
 	</div>
 	<div class="flex gap-2 justify-end self-center grow-[1]">
-		<button class="fill-base-content hover:fill-primary" on:click={() => (editMode = !editMode)}>
+		<button
+			class="fill-base-content hover:fill-primary"
+			on:click={() => {
+				editMode = !editMode;
+				if (!editMode) onSave(idx, source, target);
+			}}
+		>
 			{#if editMode}
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
 					<path

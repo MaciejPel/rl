@@ -2,7 +2,6 @@
 	import { setStore } from "../../../stores/setStore";
 	import ImportModal from "../../../components/ImportModal.svelte";
 	import TranslationRow from "../../../components/TranslationRow.svelte";
-	import { goto } from "$app/navigation";
 
 	let name = "Test set";
 	let rows: [string, string, number][] = [["", "", 0]];
@@ -12,7 +11,6 @@
 		const filteredRows = rows.filter((e) => e[0] && e[1]);
 		if (name && filteredRows.length) {
 			setStore.update((p) => [...p, { id: crypto.randomUUID(), name, data: filteredRows }]);
-			goto("/set");
 		}
 	}
 
