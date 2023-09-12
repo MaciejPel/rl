@@ -20,7 +20,7 @@
 		<h1 class="text-3xl font-bold">Sets</h1>
 		<a href="/set/create" class="btn btn-primary">Create</a>
 	</div>
-	<div class="grid grid-cols-3 gap-4">
+	<div class="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] grid-fit gap-4">
 		{#each sets as set}
 			<a href="/set/{set.id}" class="card w-full bg-base-200 text-base-content group">
 				<div class="card-body items-center text-center">

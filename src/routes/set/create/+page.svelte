@@ -41,6 +41,7 @@
 			return [s, t, 0];
 		});
 		rows = [...rows, ...tmp];
+		content = "";
 	}
 </script>
 
@@ -57,11 +58,14 @@
 		<TranslationRow {idx} bind:sourceValue={row[0]} bind:targetValue={row[1]} {removeRow} />
 	{/each}
 	<div class="fixed w-full bg-base-200 bottom-0 left-0 flex justify-center items-center">
-		<div class="container flex justify-between py-2 px-16">
+		<div class="container flex justify-between py-2 px-2 md:px-16">
 			<div class="join">
 				<button type="button" class="btn btn-error join-item" on:click={clearRows}>
 					Clear all
 				</button>
+				<button type="button" class="btn btn-info join-item" on:click={appendRow}>Add row</button>
+			</div>
+			<div class="join">
 				<button
 					type="button"
 					class="btn btn-info join-item"
@@ -69,14 +73,11 @@
 				>
 					Import
 				</button>
-			</div>
-			<div class="join">
-				<button type="button" class="btn btn-info join-item" on:click={appendRow}>Add row</button>
 				<input
 					type="submit"
 					value="Create"
 					class="btn btn-primary join-item"
-					disabled={!name || (rows.length > 0 && rows[0][0] !== "" && rows[0][1] !== "")}
+					disabled={!name || rows.length === 0 || !rows[0][0] || !rows[0][1]}
 				/>
 			</div>
 		</div>

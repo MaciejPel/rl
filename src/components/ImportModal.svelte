@@ -1,22 +1,37 @@
 <script lang="ts">
 	export let processSet = (rd: string, wd: string, content: string) => {};
 
-	let wd = "\\t";
-	let rd = "\\n";
+	let [wd, rd] = ["\\t", "\\n"];
+	let [wdValue, rdValue] = [wd, rd];
 	let content = "";
 </script>
 
 <dialog id="import-modal" class="modal">
 	<div class="modal-box">
-		<h3 class="font-bold text-lg">Import</h3>
+		<h3 class="font-bold text-lg mb-1">Import</h3>
 		<form class="form-control gap-2">
-			<input type="text" class="input input-bordered" bind:value={wd} />
-			<input type="text" class="input input-bordered" bind:value={rd} />
-			<textarea class="textarea textarea-bordered" bind:value={content} />
+			<div class="flex flex-col">
+				<label for="wd">Word Delimeter</label>
+				<input id="wd" type="text" class="input input-bordered" bind:value={wdValue} />
+			</div>
+			<div class="flex flex-col">
+				<label for="rd">Row Delimeter</label>
+				<input id="rd" type="text" class="input input-bordered" bind:value={rdValue} />
+			</div>
+			<div class="flex flex-col">
+				<label for="content">Import content</label>
+				<textarea id="content" class="textarea textarea-bordered" bind:value={content} />
+			</div>
 		</form>
-		<div class="modal-action">
+		<div class="modal-action mt-2">
 			<form method="dialog">
-				<button on:click={() => processSet(rd, wd, content)} class="btn btn-primary">Import</button>
+				<button
+					on:click={() => {
+						processSet(rdValue, wdValue, content);
+						[wdValue, rdValue, content] = [wd, rd, ""];
+					}}
+					class="btn btn-primary">Import</button
+				>
 			</form>
 		</div>
 	</div>

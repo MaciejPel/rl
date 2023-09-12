@@ -38,7 +38,7 @@
 					>{route.name}
 				</a>
 			{/each}
-			<a href="/set/create" class="hover:bg-white hover:bg-opacity-50 rounded-full p-1">
+			<a href="/set/create" class="hover:bg-black hover:bg-opacity-50 rounded-full p-1">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
