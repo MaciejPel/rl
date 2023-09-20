@@ -45,6 +45,9 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Set | Create | RLM</title>
+</svelte:head>
 <form on:submit={setSubmit} class="min-h-[calc(100lvh-5.25rem)] form-control gap-2 relative pb-16">
 	<input
 		type="text"

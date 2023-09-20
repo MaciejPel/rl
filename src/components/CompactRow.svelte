@@ -47,6 +47,10 @@
 			class="btn btn-sm btn-primary fill-white"
 			on:click={() => {
 				editMode = !editMode;
+				if (!sourceValue || !targetValue) {
+					[editMode, sourceValue, targetValue] = [false, source, target];
+					return;
+				}
 				if (!editMode) onRowSave(idx, sourceValue, targetValue);
 			}}
 		>

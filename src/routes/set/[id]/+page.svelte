@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { setStore } from "../../../stores/setStore";
-	import CompactRow from "../../../components/CompactRow.svelte";
-	import DeleteModal from "../../../components/DeleteModal.svelte";
-	import { showModal } from "../../../utils/functions";
 	import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
+	import { setStore } from "../../../stores/setStore";
+	import { showModal } from "../../../utils/functions";
+	import CompactRow from "../../../components/CompactRow.svelte";
+	import DeleteModal from "../../../components/DeleteModal.svelte";
 
 	interface Set {
 		id: string;
@@ -32,7 +32,7 @@
 		});
 	}
 
-	$: setId = $page.url.pathname.split("/")[2];
+	$: setId = $page.params.id;
 
 	$: setStore.subscribe((value: Set[]) => {
 		set = value.filter((v) => v.id === setId)[0];
@@ -42,7 +42,7 @@
 </script>
 
 <svelte:head>
-	<title>RLM | Specific set</title>
+	<title>{set?.name} | RLM</title>
 </svelte:head>
 <div class="flex flex-col gap-2">
 	<div class="flex items-center justify-between">
@@ -56,7 +56,7 @@
 			>
 				Delete
 			</button>
-			<a href="/set/{setId}/edit" class="btn btn-primary join-item">Edit</a>
+			<a href="/set/{setId}/edit" class="btn btn-primary join-item">Edit set</a>
 			<a href="/set/{setId}/learning-mode" class="btn btn-success join-item">Learning mode</a>
 		</div>
 	</div>

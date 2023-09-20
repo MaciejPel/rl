@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>RLM | Sets</title>
+	<title>Sets | RLM</title>
 </svelte:head>
 <div class="flex flex-col gap-2">
 	<div class="flex justify-between items-center">

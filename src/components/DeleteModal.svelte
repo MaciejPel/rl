@@ -10,9 +10,9 @@
 		<h3 class="font-bold text-lg mb-1">Delete set</h3>
 		<form class="form-control">
 			<label for="confirm">
-				Type-in <span class="text-error font-mono font-medium bg-base-300 px-1 rounded-sm">
+				Type <span class="text-error font-mono font-medium bg-base-300 px-1 rounded-sm">
 					{confirm}
-				</span>
+				</span> below to confirm.
 			</label>
 			<input id="confirm" type="text" class="input input-bordered" bind:value={confirmValue} />
 		</form>
