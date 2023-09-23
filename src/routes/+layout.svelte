@@ -12,8 +12,6 @@
 			(!document.documentElement.dataset.theme &&
 				window.matchMedia("(prefers-color-scheme: dark)").matches);
 	});
-	$: lightActive = !isDark ? "swap-off" : "swap-on";
-	$: darkActive = isDark ? "swap-off" : "swap-on";
 	$: themeOrder = isDark ? "light,dark" : "dark,light";
 
 	const routes = [

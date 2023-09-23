@@ -1,36 +1,46 @@
 <script lang="ts">
-	import { setStore } from "../../../stores/setStore";
-	import ImportModal from "../../../components/ImportModal.svelte";
-	import TranslationRow from "../../../components/TranslationRow.svelte";
-	import { showModal } from "../../../utils/functions";
 	import { goto } from "$app/navigation";
+	import { setStore } from "../../../stores/setStore";
+	import { showModal } from "../../../utils/functions";
+	import TranslationRow from "../../../components/TranslationRow.svelte";
+	import ImportModal from "../../../components/ImportModal.svelte";
+	import SetForm from "../../../components/SetForm.svelte";
 
-	let name = "";
-	let rows: [string, string, number][] = [["", "", 0]];
+	interface Set {
+		id: string;
+		name: string;
+		data: [string, string, number][];
+	}
+
+	let set: Set = {
+		id: crypto.randomUUID(),
+		name: "",
+		data: [["", "", 0]]
+	};
 
 	function setSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		const filteredRows = rows.filter((e) => e[0] && e[1]);
-		if (!name || filteredRows.length === 0) return;
-		if (name && filteredRows.length) {
-			setStore.update((p) => [...p, { id: crypto.randomUUID(), name, data: filteredRows }]);
+		const filteredRows = set.data.filter((e) => e[0] && e[1]);
+		if (!set.name || filteredRows.length === 0) return;
+		if (set.name && filteredRows.length) {
+			setStore.update((p) => [...p, set]);
+			goto(`/set/${set.id}`);
 		}
-		goto("/set");
 	}
 
 	function appendRow() {
-		rows = [...rows, ["", "", 0]];
+		set.data = [...set.data, ["", "", 0]];
 		setTimeout(() => {
 			window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 		}, 400);
 	}
 
 	function removeRow(idx: number) {
-		rows = rows.filter((_, i) => i !== idx);
+		set.data = set.data.filter((_, i) => i !== idx);
 	}
 
 	function clearRows() {
-		rows = [["", "", 0]];
+		set.data = [["", "", 0]];
 	}
 
 	function processSet(rd: string, wd: string, content: string) {
@@ -40,24 +50,24 @@
 			const [s, t] = c.split(wd);
 			return [s, t, 0];
 		});
-		rows = [...rows, ...tmp];
+		set.data = [...set.data, ...tmp];
 		content = "";
 	}
 </script>
 
-<svelte:head>
-	<title>Set | Create | RLM</title>
+<SetForm />
+<!-- <svelte:head>
+	<title>New set | RLM</title>
 </svelte:head>
 <form on:submit={setSubmit} class="min-h-[calc(100lvh-5.25rem)] form-control gap-2 relative pb-16">
 	<input
 		type="text"
-		name="name"
-		bind:value={name}
+		bind:value={set.name}
 		class="input font-bold bg-base-200"
 		placeholder="Set name"
 		required
 	/>
-	{#each rows as row, idx}
+	{#each set.data as row, idx}
 		<TranslationRow {idx} bind:sourceValue={row[0]} bind:targetValue={row[1]} {removeRow} />
 	{/each}
 	<div class="fixed w-full bg-base-200 bottom-0 left-0 flex justify-center items-center">
@@ -80,10 +90,10 @@
 					type="submit"
 					value="Create"
 					class="btn btn-primary join-item"
-					disabled={!name || rows.length === 0 || !rows[0][0] || !rows[0][1]}
+					disabled={!set.name || set.data.length === 0 || !set.data[0][0] || !set.data[0][1]}
 				/>
 			</div>
 		</div>
 	</div>
 </form>
-<ImportModal {processSet} />
+<ImportModal {processSet} /> -->

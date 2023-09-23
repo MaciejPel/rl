@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
-	import { setStore } from "../../../../stores/setStore";
-	import SetForm from "../../../../components/SetForm.svelte";
+	import { setStore } from "../stores/setStore";
+	import { showModal } from "../utils/functions";
+	import TranslationRow from "./TranslationRow.svelte";
+	import ImportModal from "./ImportModal.svelte";
+	import { onMount } from "svelte";
 
 	interface Set {
 		id: string;
@@ -11,19 +14,23 @@
 	}
 
 	let set: Set | null = null;
+	let mode: "create" | "edit" | null = null;
 
 	function setSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		if (!set) return;
+		if (!set || !set.name) return;
 		const filteredRows = set.data.filter((e) => e[0] && e[1]);
-		if (!set.name || filteredRows.length === 0) return;
 		if (set.name && filteredRows.length) {
-			setStore.update((p) => [
-				...p,
-				{ id: crypto.randomUUID(), name: set!.name, data: filteredRows }
-			]);
+			if (mode === "edit")
+				setStore.update((p) => {
+					console.log(p);
+					const setIndex = p.findIndex((obj: Set) => obj.id === set!.id);
+					p[setIndex] = { ...p[setIndex], set };
+					return p;
+				});
+			else if (mode === "create") setStore.update((p) => [...p, set]);
+			goto(`/set/${set.id}`);
 		}
-		goto($page.url.pathname.split("/").slice(0, -1).join("/"));
 	}
 
 	function appendRow() {
@@ -44,7 +51,7 @@
 		set.data = [["", "", 0]];
 	}
 
-	function processSet(rd: string, wd: string, content: string) {
+	function processImportSet(rd: string, wd: string, content: string) {
 		if (!set) return;
 		rd = rd === "\\n" ? "\n" : rd;
 		wd = wd === "\\t" ? "\t" : wd;
@@ -56,16 +63,29 @@
 		content = "";
 	}
 
-	$: setStore.subscribe((value: Set[]) => {
-		set = value.filter((v) => v.id === $page.params.id)[0];
+	onMount(() => {
+		const route = $page.route.id?.split("/");
+		if (route?.includes("create")) {
+			mode = "create";
+			set = {
+				id: crypto.randomUUID(),
+				name: "",
+				data: [["", "", 0]]
+			};
+		} else if (route?.includes("edit")) {
+			mode = "edit";
+			setStore.subscribe((value: Set[]) => {
+				set = value.filter((v) => v.id === $page.params.id)[0];
+			});
+		} else goto("/set");
+		if (!set) goto("/set");
 	});
-
-	// $: if (!set) goto("/set");
 </script>
 
-<SetForm />
-<!-- <svelte:head>
-	<title>Edit {set?.name} | RLM</title>
+<svelte:head>
+	<title>
+		{mode === "edit" ? `Edit ${set?.name}` : mode === "create" ? "New set" : "Loading"} | RLM</title
+	>
 </svelte:head>
 <form on:submit={setSubmit} class="min-h-[calc(100lvh-5.25rem)] form-control gap-2 relative pb-16">
 	{#if set}
@@ -79,7 +99,7 @@
 		{#each set.data as row, idx}
 			<TranslationRow {idx} bind:sourceValue={row[0]} bind:targetValue={row[1]} {removeRow} />
 		{/each}
-		<div class="fixed w-full bg-base-200 bottom-0 left-0 flex justify-center items-center">
+		<div class="fixed w-full bg-base-300 bottom-0 left-0 flex justify-center items-center">
 			<div class="container flex justify-between py-2 px-2 md:px-16">
 				<div class="join">
 					<button type="button" class="btn btn-error join-item" on:click={clearRows}>
@@ -97,7 +117,7 @@
 					</button>
 					<input
 						type="submit"
-						value="Update"
+						value={mode === "edit" ? "Update" : "Create"}
 						class="btn btn-primary join-item"
 						disabled={!set.name || set.data.length === 0 || !set.data[0][0] || !set.data[0][1]}
 					/>
@@ -106,4 +126,4 @@
 		</div>
 	{/if}
 </form>
-<ImportModal {processSet} /> -->
+<ImportModal processSet={processImportSet} />
