@@ -9,7 +9,7 @@
 	interface Set {
 		id: string;
 		name: string;
-		data: [string, string, number][];
+		data: [string, string, number, number][];
 	}
 
 	let setId: string | null = null;
@@ -17,7 +17,7 @@
 
 	function onRowSave(idx: number | null, src: string, tgt: string) {
 		if (idx === null || !set) return;
-		set.data[idx] = [src, tgt, set.data[idx][2]];
+		set.data[idx] = [src, tgt, set.data[idx][2], set.data[idx][3]];
 		setStore.update((value: Set[]) => {
 			if (!set) return value;
 			value[value.findIndex((v) => v.id === setId)] = set;

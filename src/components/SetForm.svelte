@@ -2,15 +2,15 @@
 	import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
 	import { setStore } from "../stores/setStore";
+	import { onMount } from "svelte";
 	import { showModal } from "../utils/functions";
 	import TranslationRow from "./TranslationRow.svelte";
 	import ImportModal from "./ImportModal.svelte";
-	import { onMount } from "svelte";
 
 	interface Set {
 		id: string;
 		name: string;
-		data: [string, string, number][];
+		data: [string, string, number, number][];
 	}
 
 	let set: Set | null = null;
@@ -35,7 +35,7 @@
 
 	function appendRow() {
 		if (!set?.data) return;
-		set.data = [...set.data, ["", "", 0]];
+		set.data = [...set.data, ["", "", 0, 0]];
 		setTimeout(() => {
 			window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 		}, 400);
@@ -48,16 +48,16 @@
 
 	function clearRows() {
 		if (!set?.data) return;
-		set.data = [["", "", 0]];
+		set.data = [["", "", 0, 0]];
 	}
 
 	function processImportSet(rd: string, wd: string, content: string) {
 		if (!set) return;
 		rd = rd === "\\n" ? "\n" : rd;
 		wd = wd === "\\t" ? "\t" : wd;
-		const tmp: [string, string, number][] = content.split(rd).map((c) => {
+		const tmp: [string, string, number, number][] = content.split(rd).map((c) => {
 			const [s, t] = c.split(wd);
-			return [s, t, 0];
+			return [s, t, 0, 0];
 		});
 		set.data = [...set.data, ...tmp];
 		content = "";
@@ -70,7 +70,7 @@
 			set = {
 				id: crypto.randomUUID(),
 				name: "",
-				data: [["", "", 0]]
+				data: [["", "", 0, 0]]
 			};
 		} else if (route?.includes("edit")) {
 			mode = "edit";
@@ -119,7 +119,7 @@
 						type="submit"
 						value={mode === "edit" ? "Update" : "Create"}
 						class="btn btn-primary join-item"
-						disabled={!set.name || set.data.length === 0 || !set.data[0][0] || !set.data[0][1]}
+						disabled={!set.name || set.data.length < 2 || !set.data[0][0] || !set.data[0][1]}
 					/>
 				</div>
 			</div>
