@@ -23,7 +23,6 @@
 		if (set.name && filteredRows.length) {
 			if (mode === "edit")
 				setStore.update((p) => {
-					console.log(p);
 					const setIndex = p.findIndex((obj: Set) => obj.id === set!.id);
 					p[setIndex] = { ...p[setIndex], set };
 					return p;
