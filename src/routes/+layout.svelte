@@ -4,22 +4,22 @@
 	import { onMount } from "svelte";
 	import { themeChange } from "theme-change";
 
-	let isDark = false;
-	onMount(() => {
-		themeChange(false);
-		isDark =
-			document.documentElement.dataset.theme === "dark" ||
-			(!document.documentElement.dataset.theme &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches);
-	});
-	$: themeOrder = isDark ? "light,dark" : "dark,light";
-
 	const routes = [
 		{ path: "/set", name: "Sets" },
 		{ path: "/about", name: "About" }
 	];
+
+	let isDark =
+		document.documentElement.dataset.theme === "dark" ||
+		(!document.documentElement.dataset.theme &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches);
 	let currentRoute = "/";
+
 	$: currentRoute = $page.url.pathname;
+
+	onMount(() => {
+		themeChange(false);
+	});
 </script>
 
 <header
@@ -33,7 +33,8 @@
 					href={route.path}
 					class:opacity-60={!currentRoute.includes(route.path)}
 					class={currentRoute.includes(route.path) ? "ts-nav-link-active" : "ts-nav-link"}
-					>{route.name}
+				>
+					{route.name}
 				</a>
 			{/each}
 			<a href="/set/create" class="hover:bg-black hover:bg-opacity-50 rounded-full p-1">
@@ -50,7 +51,7 @@
 			</a>
 			<button
 				class="hover:bg-black hover:bg-opacity-50 rounded-full p-1 fill-white"
-				data-toggle-theme={themeOrder}
+				data-toggle-theme="light,dark"
 				on:click={() => (isDark = !isDark)}
 			>
 				{#if isDark}
