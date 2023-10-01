@@ -19,9 +19,11 @@
 	$: currentRoute = $page.url.pathname;
 
 	onMount(() => {
-		isMounted = true;
 		document.querySelector("body")!.style.backgroundColor = "";
 		themeChange(false);
+		setTimeout(() => {
+			isMounted = true;
+		}, 50);
 	});
 </script>
 
