@@ -9,13 +9,4 @@
 	<body data-sveltekit-preload-data="hover" class="min-h-[100lvh]">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
-	<script>
-		let theme = localStorage.getItem("theme");
-		let pdcs =
-			document.documentElement.dataset.theme === "dark" ||
-			(!document.documentElement.dataset.theme &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches);
-		document.querySelector("body").style.backgroundColor =
-			theme === "light" ? "#f5f5f5" : pdcs ? "#1d232a" : "#f5f5f5";
-	</script>
 </html>
