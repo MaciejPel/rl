@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import { setStore } from "../../stores/setStore";
 
 	let sets: {
@@ -7,8 +8,10 @@
 		data: [string, string, number][];
 	}[] = [];
 
-	setStore.subscribe((value) => {
-		sets = value;
+	onMount(() => {
+		setStore.subscribe((value) => {
+			sets = value;
+		});
 	});
 </script>
 

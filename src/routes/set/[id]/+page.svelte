@@ -5,6 +5,7 @@
 	import { showModal } from "../../../utils/functions";
 	import CompactRow from "../../../components/CompactRow.svelte";
 	import DeleteModal from "../../../components/DeleteModal.svelte";
+	import { browser } from "$app/environment";
 
 	interface Set {
 		id: string;
@@ -38,16 +39,16 @@
 		set = value.filter((v) => v.id === setId)[0];
 	});
 
-	$: if (!set) goto("/set");
+	$: if (!set && browser) goto("/set");
 </script>
 
 <svelte:head>
-	<title>{set?.name} | RLM</title>
+	<title>{set?.name || ""} | RLM</title>
 </svelte:head>
 <div class="flex flex-col gap-2">
 	<div class="flex items-center justify-between">
-		<h1 class="text-3xl font-bold">{set?.name}</h1>
-		<div class="join">
+		<h1 class="text-3xl font-bold">{set?.name || ""}</h1>
+		<div class="join" class:hidden={!set}>
 			<button
 				class="btn btn-error join-item"
 				on:click={() => {

@@ -1,7 +1,8 @@
 import { writable } from "svelte/store";
+import { browser } from "$app/environment";
 
-export const setStore = writable(JSON.parse(localStorage.getItem("sets") || "[]"));
+export const setStore = writable(JSON.parse(browser ? localStorage.getItem("sets") || "[]" : "[]"));
 
 setStore.subscribe((value) => {
-	localStorage.setItem("sets", JSON.stringify(value));
+	if (browser) localStorage.setItem("sets", JSON.stringify(value));
 });
