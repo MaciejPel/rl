@@ -20,7 +20,7 @@
 	function findOtherAnswers() {
 		if (!set) return [];
 		let exampleAnswers = [currIdx];
-		while (exampleAnswers.length < 4) {
+		while (exampleAnswers.length < Math.min(set.data.length, 4)) {
 			const r = getRandomIdx(set.data as []);
 			if (!exampleAnswers.includes(r)) exampleAnswers.push(r);
 		}
@@ -85,7 +85,7 @@
 
 <div class="flex justify-center items-center h-full">
 	<div class="card w-[44rem] bg-base-200 shadow-xl">
-		<div class="card-body gap-8">
+		<div class="card-body gap-4">
 			{#if set}
 				<h2 class="card-title">{set.data[currIdx][1]}</h2>
 				{#if set.data[currIdx][2] === 0}
