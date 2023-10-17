@@ -2,8 +2,6 @@
 	import "../app.css";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
-	import { themeChange } from "theme-change";
-	import { browser } from "$app/environment";
 
 	const routes = [
 		{ path: "/set", name: "Sets" },
@@ -16,13 +14,23 @@
 	$: currentRoute = $page.url.pathname;
 
 	onMount(() => {
-		document.querySelector("body")!.style.backgroundColor = "";
-		themeChange(false);
+		const savedTheme = document.documentElement.getAttribute("data-theme");
+		if (savedTheme) {
+			isDark = savedTheme === "dark";
+			return;
+		}
+
 		isDark =
 			document.documentElement.dataset.theme === "dark" ||
 			(!document.documentElement.dataset.theme &&
 				window.matchMedia("(prefers-color-scheme: dark)").matches);
+		setTheme(isDark ? "dark" : "light");
 	});
+
+	function setTheme(theme: string) {
+		document.cookie = `theme=${theme}; max-age=${60 * 60 * 24 * 365}; path=/`;
+		document.documentElement.setAttribute("data-theme", theme);
+	}
 </script>
 
 <header
@@ -55,8 +63,10 @@
 			<button
 				class="hover:bg-black hover:bg-opacity-50 rounded-full p-1 fill-white"
 				class:hidden={isDark === null}
-				data-toggle-theme="light,dark"
-				on:click={() => (isDark = !isDark)}
+				on:click={() => {
+					isDark = !isDark;
+					setTheme(isDark ? "dark" : "light");
+				}}
 			>
 				{#if isDark}
 					<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
