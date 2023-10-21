@@ -3,7 +3,7 @@ export function showModal(selector: string) {
 	if (d) d.showModal();
 }
 
-function qs(selector: string, root: Document | HTMLElement = document) {
+export function qs(selector: string, root: Document | HTMLElement = document): HTMLElement | null {
 	return root.querySelector(selector);
 }
 
@@ -16,5 +16,6 @@ export function shuffle(arr: []) {
 		const j = Math.floor(Math.random() * (i + 1));
 		[arr[i], arr[j]] = [arr[j], arr[i]];
 	}
+
 	return arr;
 }

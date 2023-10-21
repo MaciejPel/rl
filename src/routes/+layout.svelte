@@ -2,32 +2,38 @@
 	import "../app.css";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
+	import { qs } from "../utils/functions";
+
+	type Theme = "light" | "dark";
 
 	const routes = [
 		{ path: "/set", name: "Sets" },
 		{ path: "/about", name: "About" }
 	];
 
-	let isDark: boolean | null = null;
+	export let data: { theme: Theme | undefined };
+	let theme: Theme | null = data.theme || null;
 	let currentRoute = "/";
 
 	$: currentRoute = $page.url.pathname;
 
 	onMount(() => {
-		const savedTheme = document.documentElement.getAttribute("data-theme");
-		if (savedTheme) {
-			isDark = savedTheme === "dark";
+		const theme = document.documentElement.getAttribute("data-theme") as Theme;
+		if (theme) {
+			setTheme(theme);
 			return;
 		}
 
-		isDark =
-			document.documentElement.dataset.theme === "dark" ||
-			(!document.documentElement.dataset.theme &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches);
-		setTheme(isDark ? "dark" : "light");
+		setTheme(
+			qs("html")?.dataset.theme === "dark" ||
+				(!qs("html")?.dataset.theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+				? "dark"
+				: "light"
+		);
 	});
 
-	function setTheme(theme: string) {
+	function setTheme(newTheme: Theme) {
+		theme = newTheme;
 		document.cookie = `theme=${theme}; max-age=${60 * 60 * 24 * 365}; path=/`;
 		document.documentElement.setAttribute("data-theme", theme);
 	}
@@ -38,7 +44,7 @@
 >
 	<div class="container flex justify-between text-white">
 		<a href="/" class="text-3xl font-bold tracking-wider ts-logo">RLM</a>
-		<nav class="flex gap-4 items-center text-lg font-bold">
+		<nav class="flex gap-4 items-center text-lg font-bold" class:hidden={!theme}>
 			{#each routes as route}
 				<a
 					href={route.path}
@@ -61,14 +67,14 @@
 				</svg>
 			</a>
 			<button
+				type="button"
+				title="Switch theme"
 				class="hover:bg-black hover:bg-opacity-50 rounded-full p-1 fill-white"
-				class:hidden={isDark === null}
 				on:click={() => {
-					isDark = !isDark;
-					setTheme(isDark ? "dark" : "light");
+					setTheme(theme === "dark" ? "light" : "dark");
 				}}
 			>
-				{#if isDark}
+				{#if theme === "dark"}
 					<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 						<path
 							fill-rule="evenodd"
@@ -76,7 +82,7 @@
 							clip-rule="evenodd"
 						/>
 					</svg>
-				{:else}
+				{:else if theme === "light"}
 					<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 						<path
 							d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
