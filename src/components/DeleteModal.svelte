@@ -1,7 +1,6 @@
 <script lang="ts">
-	export let id: string | null = "";
 	export let name: string = "";
-	export let onSetDelete = (id: string | null) => {};
+	export let onSetDelete = () => {};
 	let [confirm, confirmValue] = [`sudo delete set ${name}`, ""];
 </script>
 
@@ -20,7 +19,7 @@
 			<form method="dialog" class="join">
 				<button class="btn join-item" on:click={() => (confirmValue = "")}>Cancel</button>
 				<button
-					on:click={() => onSetDelete(id)}
+					on:click={() => onSetDelete()}
 					class="btn btn-error join-item"
 					disabled={confirm !== confirmValue}>Delete</button
 				>

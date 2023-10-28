@@ -26,10 +26,24 @@
 		});
 	}
 
-	function onSetDelete(id: string | null) {
+	function onSetReset() {
 		setStore.update((value: Set[]) => {
 			if (!set) return value;
-			return value.filter((v) => v.id !== id);
+			return value.filter((v) => {
+				if (v.id !== set?.id) return v;
+				for (let idx = 0; idx < v.data.length; idx++) {
+					v.data[idx][2] = 0;
+					v.data[idx][3] = 0;
+				}
+				return v;
+			});
+		});
+	}
+
+	function onSetDelete() {
+		setStore.update((value: Set[]) => {
+			if (!set) return value;
+			return value.filter((v) => v.id !== set?.id);
 		});
 	}
 
@@ -57,6 +71,7 @@
 			>
 				Delete
 			</button>
+			<button class="btn btn-warning join-item" on:click={() => onSetReset()}>Reset</button>
 			<a href="/set/{setId}/edit" class="btn btn-primary join-item">Edit set</a>
 			<a href="/set/{setId}/learning-mode" class="btn btn-success join-item">Learning mode</a>
 		</div>
@@ -69,4 +84,4 @@
 		{/if}
 	</div>
 </div>
-<DeleteModal id={setId} name={set?.name} {onSetDelete} />
+<DeleteModal name={set?.name} {onSetDelete} />

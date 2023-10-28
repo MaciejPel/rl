@@ -18,7 +18,7 @@
 	$: currentRoute = $page.url.pathname;
 
 	onMount(() => {
-		const theme = document.documentElement.getAttribute("data-theme") as Theme;
+		const theme = document.documentElement.getAttribute("data-theme") as Theme | null;
 		if (theme) {
 			setTheme(theme);
 			return;
